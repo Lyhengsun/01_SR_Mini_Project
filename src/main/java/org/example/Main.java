@@ -38,6 +38,7 @@ public class Main {
         Menu.addMenuOption("U", "Update", () -> {
         });
         Menu.addMenuOption("D", "Delete", () -> {
+            productController.deleteProduct();
         });
         Menu.addMenuOption("S", "Search (name)", () -> {
         });

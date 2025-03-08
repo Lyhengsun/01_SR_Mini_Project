@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 public class ProductModelImplement {
-    private String dbName = "stock_management_db";
+    private String dbName = "postgres";
     private String user = "postgres";
-    private String password = "password";
+    private String password = "123";
     ArrayList<ProductModel> products = new ArrayList<>();
 
     public ProductModelImplement() {
@@ -68,5 +68,20 @@ public class ProductModelImplement {
             }
         }
         return product;
+    }
+    public boolean deleteProduct (int productID){
+
+        try {
+            Connection con = getDBConnection();
+            PreparedStatement pst = con.prepareStatement("DELETE from products where product_id = ?");
+
+            pst.setInt(1,productID);
+            int arrowAffect = pst.executeUpdate();
+
+            return arrowAffect == 1;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
