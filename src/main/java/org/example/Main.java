@@ -40,6 +40,7 @@ public class Main {
         Menu.addMenuOption("D", "Delete", () -> {
         });
         Menu.addMenuOption("S", "Search (name)", () -> {
+            productController.productSearchByName();
         });
         Menu.addMenuOption("Se", "Set rows", () -> {
         });
