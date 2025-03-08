@@ -2,7 +2,7 @@ package org.example;
 import java.util.Date;
 
 public class ProductModel {
-    private int id;
+    private final int id;
     private String name;
     private double unitPrice;
     private int qty;
