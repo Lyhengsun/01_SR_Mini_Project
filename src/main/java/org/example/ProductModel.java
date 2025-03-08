@@ -1,4 +1,5 @@
 package org.example;
+
 import java.util.Date;
 
 public class ProductModel {
@@ -20,36 +21,32 @@ public class ProductModel {
         return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setUnitPrice(double unitPrice) {
-        this.unitPrice = unitPrice;
     }
 
     public double getUnitPrice() {
         return unitPrice;
     }
 
-    public void setQty(int qty) {
-        this.qty = qty;
-    }
-
     public int getQty() {
         return qty;
     }
 
-    public void setImportDate(Date importDate) {
-        this.importDate = importDate;
-    }
-
     public Date getImportDate() {
         return importDate;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setQty(int qty) {
+        this.qty = qty;
+    }
+
+    public void setUnitPrice(double unitPrice) {
+        this.unitPrice = unitPrice;
     }
 }
 

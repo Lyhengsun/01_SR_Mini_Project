@@ -9,7 +9,7 @@ import java.util.TreeMap;
 
 public class Menu {
     public static HashMap<String, MenuOption> menuOptionMap = new HashMap<>();
-    
+
     public static void addMenuOption(String optionKey, String optionName, Runnable optionOperation) {
         menuOptionMap.put(optionKey.toLowerCase(), new MenuOption(optionName, optionOperation));
     }
@@ -34,7 +34,7 @@ public class Menu {
 
     public static String getMenuTable() {
         Table menuTable = new Table(6, BorderStyle.UNICODE_BOX, ShownBorders.NONE);
-        String[] optionOrder = {"W", "R", "U", "D", "S", "Se", "Sa", "Un", "Ba", "Re", "E"};
+        String[] optionOrder = {"W", "R", "U", "D", "S", "Se", "Sa", "Un", "E"};
         for (String optionKey : optionOrder) {
             menuTable.addCell("  " + optionKey + "). " + menuOptionMap.get(optionKey.toLowerCase()).optionName + "  ");
         }
