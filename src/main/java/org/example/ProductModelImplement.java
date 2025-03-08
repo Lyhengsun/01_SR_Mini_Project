@@ -8,7 +8,7 @@ public class ProductModelImplement {
     private String dbName = "stock_management_db";
     private String user = "postgres";
     private String password = "11112222";
-    ArrayList<ProductModel> products = new ArrayList<>();
+    private ArrayList<ProductModel> products;
 
     public ProductModelImplement() {
         this.products = this.getAllProductsFromDB();
@@ -25,8 +25,7 @@ public class ProductModelImplement {
             props.setProperty("ssl", "false");
 
             conn = DriverManager.getConnection(url, props);
-        }
-        catch (ClassNotFoundException | SQLException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             System.out.println("Exception: " + e.getMessage());
         }
 
@@ -38,17 +37,20 @@ public class ProductModelImplement {
 
     private ArrayList<ProductModel> getAllProductsFromDB() {
         ArrayList<ProductModel> productList = new ArrayList<>();
-        try {
-            Connection conn = getDBConnection();
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM products;");
+        try (Connection conn = getDBConnection();
+             Statement st = conn.createStatement();
+             ResultSet rs = st.executeQuery("SELECT * FROM products;")) {
+
             while (rs.next()) {
-                ProductModel product = new ProductModel(rs.getInt("product_id"), rs.getString("product_name"), rs.getDouble("product_unit_price"), rs.getInt("quantity"), rs.getDate("imported_date"));
+                ProductModel product = new ProductModel(
+                        rs.getInt("product_id"),
+                        rs.getString("product_name"),
+                        rs.getDouble("product_unit_price"),
+                        rs.getInt("quantity"),
+                        rs.getDate("imported_date")
+                );
                 productList.add(product);
             }
-            rs.close();
-            st.close();
-            conn.close();
         } catch (SQLException e) {
             System.out.println("Error SQL: " + e.getMessage());
         }
@@ -59,29 +61,13 @@ public class ProductModelImplement {
         return products;
     }
 
-    //Read product by ID
+    // Read product by ID from ArrayList instead of database
     public ProductModel getProductByID(int id) {
-        ProductModel product = null;
-        String query = "SELECT * FROM products WHERE product_id = ?";
-
-        try (Connection conn = getDBConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-
-            stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                product = new ProductModel(
-                        rs.getInt("product_id"),
-                        rs.getString("product_name"),
-                        rs.getDouble("product_unit_price"),
-                        rs.getInt("quantity"),
-                        rs.getDate("imported_date")
-                );
+        for (ProductModel product : products) {
+            if (product.getId() == id) {
+                return product;
             }
-        } catch (SQLException e) {
-            System.out.println("SQL Error: " + e.getMessage());
         }
-        return product;
+        return null;
     }
 }
