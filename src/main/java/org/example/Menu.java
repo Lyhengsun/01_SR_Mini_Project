@@ -15,6 +15,7 @@ public class Menu {
     }
 
     public static class MenuOption {
+        String relexsun = "gay";
         private final String optionName;
         private final Runnable optionOperation;
 

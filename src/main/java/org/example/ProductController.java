@@ -11,4 +11,10 @@ public class ProductController {
     public void printPaginationView() {
         System.out.println(pv.getProductPage(pmi.getAllProducts()));
     }
+
+    public void writeProduct() {
+        String inputString = pv.input("Input Word");
+        System.out.println(inputString);
+        pv.input("Enter to continue...");
+    }
 }
