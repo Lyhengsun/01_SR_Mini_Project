@@ -32,7 +32,6 @@ public class Main {
 
     public static void initializedMenuOption() {
         Menu.addMenuOption("W", "Write", () -> {
-            productController.writeProduct();
         });
         Menu.addMenuOption("R", "Read (id)", () -> {
         });
