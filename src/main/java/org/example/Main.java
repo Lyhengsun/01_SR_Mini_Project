@@ -38,11 +38,10 @@ public class Main {
                     case "g" -> {
                         while (true) {
                             int pageNumInput = Integer.parseInt(pv.inputLoopWithRegexValidation(ConsoleColor.ANSI_YELLOW + "Enter page number (1-" + totalPage + "): " + ConsoleColor.ANSI_RESET, "^[0-9+$", "Invalid Input. Please enter a valid page number"));
-                            if (pageNumInput > 0 && pageNumInput <= totalPage ) {
+                            if (pageNumInput > 0 && pageNumInput <= totalPage) {
                                 productController.setPageByPageNumber(pageNumInput);
                                 break;
-                            }
-                            else
+                            } else
                                 System.out.println("Invalid Input. Please enter a valid page number\n");
                         }
                     }
@@ -50,8 +49,10 @@ public class Main {
             } else {
                 System.out.println("Invalid Option. Please try again \n");
             }
-            if (optionInput.equals("e"))
+            if (optionInput.equals("e")) {
+                System.out.println(ConsoleColor.ANSI_PURPLE + "(´｡• ᵕ •｡`)♡♡♡ Thank for using our system!! Have a nice day!!! ♡♡♡(｡- ω -)" + ConsoleColor.ANSI_RESET);
                 break;
+            }
         }
     }
 
@@ -60,15 +61,10 @@ public class Main {
         Menu.addMenuOption("R", "Read (id)", () -> productController.readProductById(new Scanner(System.in)));
         Menu.addMenuOption("U", "Update", () -> productController.updateProduct());
         Menu.addMenuOption("D", "Delete", () -> productController.deleteProduct());
-        Menu.addMenuOption("S", "Search (name)", () -> {
-        });
+        Menu.addMenuOption("S", "Search (name)", () -> productController.productSearchByName());
         Menu.addMenuOption("Se", "Set rows", () -> productController.setRowsOperation());
         Menu.addMenuOption("Sa", "Save", () -> productController.saveOperation());
         Menu.addMenuOption("Un", "Unsaved", () -> productController.unsavedOperation());
-        Menu.addMenuOption("Ba", "Backup", () -> {
-        });
-        Menu.addMenuOption("Re", "Restore", () -> {
-        });
         Menu.addMenuOption("E", "Exit", () -> {
         });
     }

@@ -1,4 +1,5 @@
 package org.example;
+
 import java.util.Date;
 
 public class ProductModel {
@@ -19,15 +20,19 @@ public class ProductModel {
     public int getId() {
         return id;
     }
+
     public String getName() {
         return name;
     }
+
     public double getUnitPrice() {
         return unitPrice;
     }
+
     public int getQty() {
         return qty;
     }
+
     public Date getImportDate() {
         return importDate;
     }

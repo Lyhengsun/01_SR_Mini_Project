@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 public class ProductModelImplement {
-    private String dbName = "stock_management_db";
-    private String user = "postgres";
-    private String password = "";
+    private final String dbName = "stock_management_db";
+    private final String user = "postgres";
+    private final String password = "";
     ArrayList<ProductModel> products = new ArrayList<>();
 
     public ProductModelImplement() {
@@ -18,7 +18,7 @@ public class ProductModelImplement {
         Connection conn = null;
         try {
             Class.forName("org.postgresql.Driver");
-            String url = "jdbc:postgresql://localhost/" + dbName;
+            String url = "jdbc:postgresql://localhost:5432/" + dbName;
             Properties props = new Properties();
             props.setProperty("user", user);
             props.setProperty("password", password);

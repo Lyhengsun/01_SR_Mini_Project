@@ -3,7 +3,12 @@ package org.example;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.regex.Pattern;
+import java.util.spi.AbstractResourceBundleProvider;
+
+import org.nocrala.tools.texttablefmt.BorderStyle;
+import org.nocrala.tools.texttablefmt.CellStyle;
+import org.nocrala.tools.texttablefmt.ShownBorders;
+import org.nocrala.tools.texttablefmt.Table;
 
 public class ProductController {
     private final ProductView pv;
@@ -77,12 +82,13 @@ public class ProductController {
     public void saveOperation() {
         while (true) {
             System.out.println("'si' to save writes and 'su' to save update and 'b' to go back to the menu");
-            String unsavedInput = pv.input("Enter your input :").toLowerCase();
+            String unsavedInput = pv.input("Enter your input").toLowerCase();
 
             boolean exit = false;
             switch (unsavedInput) {
                 case "si" -> {
                     if (unsavedWrite.isEmpty()) {
+                        System.out.println(pv.emptyTableView());
                         System.out.println("There are no unsaved writes to save");
                         exit = true;
                         break;
@@ -128,8 +134,10 @@ public class ProductController {
             switch (unsavedInput) {
                 case "ui" -> {
                     if (unsavedWrite.isEmpty()) {
+                        System.out.println(pv.emptyTableView());
                         System.out.println("There are no unsaved writes to display");
                         exit = true;
+                        pv.input("Press Enter to go back to menu...");
                         break;
                     }
                     System.out.println(pv.productsView(unsavedWrite));
@@ -164,16 +172,15 @@ public class ProductController {
 
         ProductModel productFound = product.getProductByID(inputId);
         unsavedUpdate.removeIf(p -> p.getId() == productFound.getId());
-        int choice = pv.updateProductView(productFound);
         do {
+            int choice = pv.updateProductView(productFound);
             switch (choice) {
                 case 1 -> {
                     Helper.inputMessage("Enter name: ");
                     String name = sc.nextLine();
                     productFound.setName(name);
                     unsavedUpdate.add(productFound);
-                    Helper.successMessage("Successfully updated" + name);
-
+                    Helper.successMessage("Successfully updated " + name);
                 }
                 case 2 -> {
                     Helper.inputMessage("Enter unit price: ");
@@ -191,7 +198,6 @@ public class ProductController {
                     productFound.setQty(Integer.parseInt(temp));
                     unsavedUpdate.add(productFound);
                     Helper.successMessage("Successfully updated " + temp);
-
                 }
                 case 4 -> {
                     Helper.inputMessage("Enter name: ");
@@ -216,6 +222,9 @@ public class ProductController {
     }
 
     public void savedUpdate() {
+        if (unsavedUpdate.isEmpty()) {
+            System.out.println(pv.emptyTableView());
+        }
         for (ProductModel p : unsavedUpdate) {
             if (pmi.updateProducts(p)) {
                 Helper.successMessage("Product " + p.getId() + " successfully updated");
@@ -228,6 +237,11 @@ public class ProductController {
     }
 
     public void unsavedUpdateOperation() {
+        if (pmi.getAllProducts().isEmpty()) {
+            pv.emptyTableView();
+            Helper.enterInput();
+            return;
+        }
         pv.unsavedUpdateView(this.unsavedUpdate);
     }
 
@@ -322,5 +336,38 @@ public class ProductController {
     // Method to validate numeric ID input
     private boolean isValidId(String input) {
         return input.matches("^[0-9]+$");
+    }
+
+    public void productSearchByName() {
+        ArrayList<ProductModel> products = pmi.getAllProducts();
+        Table table = new Table(5, BorderStyle.UNICODE_ROUND_BOX, ShownBorders.SURROUND_HEADER_AND_COLUMNS);
+        CellStyle cellStyle = new CellStyle();
+        String search = pv.input("Enter product name to search ").toLowerCase();
+        boolean checkInvalidName = true;
+        int index = 0;
+        for (ProductModel productSearch : products) {
+            if (productSearch.getName().toLowerCase().contains(search)) {
+                index++;
+                if (index == 1) {
+                    table.addCell(" ".repeat(3) + "ID" + " ".repeat(3), cellStyle);
+                    table.addCell(" ".repeat(5) + "Name" + " ".repeat(5), cellStyle);
+                    table.addCell(" ".repeat(3) + "Unit Price" + " ".repeat(3), cellStyle);
+                    table.addCell(" ".repeat(3) + "Qty" + " ".repeat(3), cellStyle);
+                    table.addCell(" ".repeat(3) + "Import Date" + " ".repeat(3), cellStyle);
+                }
+                table.addCell(" ".repeat(3) + productSearch.getId() + " ".repeat(3), cellStyle);
+                table.addCell(" ".repeat(5) + productSearch.getName() + " ".repeat(5), cellStyle);
+                table.addCell(" ".repeat(3) + productSearch.getUnitPrice() + " ".repeat(3), cellStyle);
+                table.addCell(" ".repeat(3) + productSearch.getQty() + " ".repeat(3), cellStyle);
+                table.addCell(" ".repeat(3) + productSearch.getImportDate() + " ".repeat(3), cellStyle);
+                checkInvalidName = false;
+            }
+        }
+        System.out.println(table.render());
+        if (checkInvalidName) {
+            System.out.println(ConsoleColor.ANSI_RED + "Invalid product name ????? " + ConsoleColor.ANSI_RESET);
+        }
+        pv.input("Please continue.......");
+
     }
 }
