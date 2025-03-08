@@ -6,8 +6,8 @@ import java.util.Properties;
 
 public class ProductModelImplement {
     private String dbName = "stock_management_db";
-    private String user = "relexsun";
-    private String password = "relexsun";
+    private String user = "postgres";
+    private String password = "";
     ArrayList<ProductModel> products = new ArrayList<>();
 
     public ProductModelImplement() {
@@ -98,6 +98,7 @@ public class ProductModelImplement {
             pstmt.setInt(3, unsavedProduct.getQty());
             pstmt.setInt(4, unsavedProduct.getId());
 
+            pstmt.executeUpdate();
             success = true;
             conn.close();
             pstmt.close();

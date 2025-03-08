@@ -89,16 +89,14 @@ public class ProductController {
     }
 
     public void savedUpdate() {
-        ArrayList<ProductModel> singleProductList = new ArrayList<>();
         for(ProductModel p : unsavedUpdate) {
-            singleProductList.add(p);
             if (pmi.updateProducts(p)) {
                 Helper.successMessage("Product " + p.getId() + " successfully updated");
             } else {
                 Helper.errorMessage("Product " + p.getId() + " unsuccessfully updated");
             }
         }
-        unsavedUpdate.removeAll(singleProductList);
+        unsavedUpdate = new ArrayList<>();
     }
 
     public void unsavedUpdate() {
