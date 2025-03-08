@@ -7,7 +7,7 @@ import java.util.Properties;
 public class ProductModelImplement {
     private String dbName = "stock_management_db";
     private String user = "postgres";
-    private String password = "11112222";
+    private String password = "";
     private ArrayList<ProductModel> products;
 
     public ProductModelImplement() {
