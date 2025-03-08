@@ -47,7 +47,7 @@ public class ProductView {
         }
     }
 
-    public ProductModel writeProductView() {
-
-    }
+//    public ProductModel writeProductView() {
+//
+//    }
 }
