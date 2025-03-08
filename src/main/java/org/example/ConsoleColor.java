@@ -1,5 +1,8 @@
 package org.example;
 
+import java.util.Scanner;
+import java.util.regex.Pattern;
+
 public class ConsoleColor {
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
@@ -10,12 +13,4 @@ public class ConsoleColor {
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
-
-    public static void errorMessage(String msg) {
-        System.out.println(ANSI_RED + msg + ANSI_RESET);
-    }
-
-    public static void choiceMessage(String msg) {
-        System.out.println(ANSI_YELLOW + msg + ANSI_RESET);
-    }
 }

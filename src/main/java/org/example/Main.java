@@ -23,7 +23,6 @@ public class Main {
             System.out.println();
             System.out.println(Menu.getMenuTable());
             System.out.println("-".repeat(98));
-            ;
             System.out.print(ConsoleColor.ANSI_YELLOW + "=> Choose an option: " + ConsoleColor.ANSI_RESET);
             String optionInput = sc.nextLine().trim().toLowerCase();
 
@@ -57,20 +56,15 @@ public class Main {
     }
 
     public static void initializedMenuOption() {
-        Menu.addMenuOption("W", "Write", () -> {
-            productController.writeProducts();
-        });
+        Menu.addMenuOption("W", "Write", () -> productController.writeProducts());
         Menu.addMenuOption("R", "Read (id)", () -> {
         });
-        Menu.addMenuOption("U", "Update", () -> {
-        });
+        Menu.addMenuOption("U", "Update", () -> productController.updateProduct());
         Menu.addMenuOption("D", "Delete", () -> {
         });
         Menu.addMenuOption("S", "Search (name)", () -> {
         });
-        Menu.addMenuOption("Se", "Set rows", () -> {
-            productController.setRowsOperation();
-        });
+        Menu.addMenuOption("Se", "Set rows", () -> productController.setRowsOperation());
         Menu.addMenuOption("Sa", "Save", () -> {
             productController.saveOperation();
         });

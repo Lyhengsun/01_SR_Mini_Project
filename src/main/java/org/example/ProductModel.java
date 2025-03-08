@@ -31,5 +31,17 @@ public class ProductModel {
     public Date getImportDate() {
         return importDate;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setQty(int qty) {
+        this.qty = qty;
+    }
+
+    public void setUnitPrice(double unitPrice) {
+        this.unitPrice = unitPrice;
+    }
 }
 
