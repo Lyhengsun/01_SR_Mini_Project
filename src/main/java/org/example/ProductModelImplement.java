@@ -77,6 +77,7 @@ public class ProductModelImplement {
 
             pst.setInt(1,productID);
             int arrowAffect = pst.executeUpdate();
+            this.products = this.getAllProductsFromDB();
 
             return arrowAffect == 1;
 

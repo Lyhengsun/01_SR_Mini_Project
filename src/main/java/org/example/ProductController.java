@@ -34,10 +34,9 @@ public class ProductController {
             }
         }
 
+        ProductModel product = pmi.getProductByID(productID);
 
-        boolean isDeleted = pmi.deleteProduct(productID);
-
-        if (!isDeleted) {
+        if (product == null) {
             System.out.println("Product not found.");
             return;
         }
@@ -46,7 +45,12 @@ public class ProductController {
         String confirmation = scan.next();
 
         if (confirmation.equalsIgnoreCase("y") || confirmation.equalsIgnoreCase("yes")) {
-            System.out.println("Deleted successfully.");
+            boolean isDeleted = pmi.deleteProduct(productID);
+            if (isDeleted) {
+                System.out.println("Deleted successfully.");
+            } else {
+                System.out.println("Error: Unable to delete product.");
+            }
         } else {
             System.out.println("Deletion canceled.");
         }
