@@ -27,19 +27,23 @@ public class ProductController {
     }
 
     public void incrementPage() {
-        this.startCount = Math.min(this.startCount + this.rows, ((this.getTotalPage()-1) * this.rows));
+        this.startCount = Math.min(this.startCount + this.rows, ((this.getTotalPage() - 1) * this.rows));
     }
+
     public void decrementPage() {
         this.startCount = Math.max(this.startCount - this.rows, 0);
     }
-    public int getTotalPage(){
+
+    public int getTotalPage() {
         ArrayList<ProductModel> products = pmi.getAllProducts();
         return ((products.size() / this.rows) + (products.size() % this.rows == 0 ? 0 : 1));
     }
+
     public void setPageByPageNumber(int pageNumber) {
         if (pageNumber <= getTotalPage() && pageNumber > 0)
-            this.startCount = (pageNumber -1) * this.rows;
+            this.startCount = (pageNumber - 1) * this.rows;
     }
+
     public void setRows(int rows) {
         this.rows = rows;
     }
@@ -60,7 +64,7 @@ public class ProductController {
     }
 
     public void setRowsOperation() {
-        while (true){
+        while (true) {
             int rowsSizeInput = Integer.parseInt(pv.inputLoopWithRegexValidation("Enter a rows size", "^[0-9]+$", "Invalid Input. Rows size need to be an integer and bigger than 0"));
             if (rowsSizeInput > 0) {
                 this.setRows(rowsSizeInput);
@@ -88,10 +92,10 @@ public class ProductController {
 
                     if (confirmInsert) {
                         for (ProductModel product : this.unsavedWrite) {
-                            if(pmi.insertNewProductWithoutSync(product))
-                                System.out.println(ConsoleColor.ANSI_GREEN + "New product '"+ product.getName() +"' have been successfully added" + ConsoleColor.ANSI_RESET);
+                            if (pmi.insertNewProductWithoutSync(product))
+                                System.out.println(ConsoleColor.ANSI_GREEN + "New product '" + product.getName() + "' have been successfully added" + ConsoleColor.ANSI_RESET);
                             else
-                                System.out.println(ConsoleColor.ANSI_RED + "New product '"+ product.getName() + "' failed to get added" + ConsoleColor.ANSI_RESET);
+                                System.out.println(ConsoleColor.ANSI_RED + "New product '" + product.getName() + "' failed to get added" + ConsoleColor.ANSI_RESET);
                         }
                         pmi.syncData();
                         this.unsavedWrite = new ArrayList<>();
@@ -150,7 +154,7 @@ public class ProductController {
         boolean foundId;
         ProductModelImplement product = new ProductModelImplement();
         int inputId;
-        do{
+        do {
             Helper.inputMessage("Input ID to update: ");
             String tempInput = sc.nextLine();
             tempInput = Helper.inputValidation(tempInput, Helper.TYPE.UPDATEID);
@@ -212,7 +216,7 @@ public class ProductController {
     }
 
     public void savedUpdate() {
-        for(ProductModel p : unsavedUpdate) {
+        for (ProductModel p : unsavedUpdate) {
             if (pmi.updateProducts(p)) {
                 Helper.successMessage("Product " + p.getId() + " successfully updated");
             } else {
@@ -262,6 +266,55 @@ public class ProductController {
                 } else {
                     System.out.println(ConsoleColor.ANSI_YELLOW + "Invalid choice! Please enter 'y' or 'n'." + ConsoleColor.ANSI_RESET);
                 }
+            }
+        }
+    }
+
+    public void deleteProduct() {
+        Scanner scan = new Scanner(System.in);
+        int productID;
+        while (true) {
+            ProductModel product = null;
+            while (true) {
+                System.out.print(ConsoleColor.ANSI_YELLOW + "Please Enter ID to Delete the record: " + ConsoleColor.ANSI_RESET);
+
+                if (scan.hasNextInt()) {
+                    productID = scan.nextInt();
+
+                    if (productID > 0) {
+                        product = pmi.getProductByID(productID);
+
+                        if (product != null) {
+                            break;
+                        } else {
+                            System.out.println(ConsoleColor.ANSI_YELLOW + "Product not found. Please enter a valid Product ID." + ConsoleColor.ANSI_RESET);
+                        }
+                    } else {
+                        System.out.println(ConsoleColor.ANSI_YELLOW + "Product ID cannot be 0 or negative. Please enter a valid number." + ConsoleColor.ANSI_RESET);
+                    }
+                } else {
+                    System.out.println("Invalid input. Please enter a valid number for Product ID.");
+                    scan.next();
+                }
+            }
+            System.out.println(pv.productsView(List.of(product)));
+            System.out.println("Are you sure you want to delete product ID: " + productID + "? (y/n)");
+            String confirmation = scan.next();
+
+            if (confirmation.equalsIgnoreCase("y") || confirmation.equalsIgnoreCase("yes")) {
+                boolean isDeleted = pmi.deleteProduct(productID);
+                if (isDeleted) {
+                    System.out.println(ConsoleColor.ANSI_GREEN + "Deleted successfully." + ConsoleColor.ANSI_RESET);
+                    System.out.println("Press Enter to continue...");
+                    scan.nextLine();
+                    scan.nextLine();
+                    break;
+                } else {
+                    System.out.println(ConsoleColor.ANSI_RED + "Error: Unable to delete product." + ConsoleColor.ANSI_RESET);
+                }
+            } else {
+                System.out.println("Deletion canceled.");
+                break;
             }
         }
     }

@@ -96,9 +96,10 @@ public class ProductModelImplement {
         }
         return false;
     }
+
     public boolean getProductByIDBool(int id) {
         boolean found = false;
-        for(ProductModel p : products) {
+        for (ProductModel p : products) {
             if (p.getId() == id) {
                 found = true;
                 break;
@@ -134,4 +135,22 @@ public class ProductModelImplement {
         }
 
         return success;
-    }}
+    }
+
+    public boolean deleteProduct(int productID) {
+
+        try {
+            Connection con = getDBConnection();
+            PreparedStatement pst = con.prepareStatement("DELETE from products where product_id = ?");
+
+            pst.setInt(1, productID);
+            int arrowAffect = pst.executeUpdate();
+            this.products = this.getAllProductsFromDB();
+
+            return arrowAffect == 1;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}

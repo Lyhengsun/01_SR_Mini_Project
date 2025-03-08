@@ -59,8 +59,7 @@ public class Main {
         Menu.addMenuOption("W", "Write", () -> productController.writeProducts());
         Menu.addMenuOption("R", "Read (id)", () -> productController.readProductById(new Scanner(System.in)));
         Menu.addMenuOption("U", "Update", () -> productController.updateProduct());
-        Menu.addMenuOption("D", "Delete", () -> {
-        });
+        Menu.addMenuOption("D", "Delete", () -> productController.deleteProduct());
         Menu.addMenuOption("S", "Search (name)", () -> {
         });
         Menu.addMenuOption("Se", "Set rows", () -> productController.setRowsOperation());
