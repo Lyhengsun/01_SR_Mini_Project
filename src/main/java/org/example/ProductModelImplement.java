@@ -6,8 +6,8 @@ import java.util.Properties;
 
 public class ProductModelImplement {
     private String dbName = "stock_management_db";
-    private String user = "postgres";
-    private String password = "password";
+    private String user = "relexsun";
+    private String password = "relexsun";
     ArrayList<ProductModel> products = new ArrayList<>();
 
     public ProductModelImplement() {
@@ -69,4 +69,77 @@ public class ProductModelImplement {
         }
         return product;
     }
+
+    public boolean getProductByIDBool(int id) {
+        boolean found = false;
+        for(ProductModel p : products) {
+            if (p.getId() == id) {
+                found = true;
+                break;
+            }
+        }
+        return found;
+    }
+
+    public boolean updateProducts(ProductModel unsavedProduct) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        boolean success = false;
+
+        try {
+            conn = getDBConnection();
+
+            String sql = "UPDATE products SET product_name = ?, product_unit_price = ?, quantity = ? WHERE product_id = ?;";
+
+            pstmt = conn.prepareStatement(sql);
+
+            pstmt.setString(1, unsavedProduct.getName());
+            pstmt.setDouble(2, unsavedProduct.getUnitPrice());
+            pstmt.setInt(3, unsavedProduct.getQty());
+            pstmt.setInt(4, unsavedProduct.getId());
+
+            success = true;
+            conn.close();
+            pstmt.close();
+
+        } catch (SQLException e) {
+            System.out.println("Update Error SQL: " + e.getMessage());
+        }
+
+        return success;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

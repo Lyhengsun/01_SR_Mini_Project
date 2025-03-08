@@ -36,6 +36,7 @@ public class Main {
         Menu.addMenuOption("R", "Read (id)", () -> {
         });
         Menu.addMenuOption("U", "Update", () -> {
+            productController.updateProduct();
         });
         Menu.addMenuOption("D", "Delete", () -> {
         });
@@ -44,8 +45,10 @@ public class Main {
         Menu.addMenuOption("Se", "Set rows", () -> {
         });
         Menu.addMenuOption("Sa", "Save", () -> {
+            productController.savedUpdate();
         });
         Menu.addMenuOption("Un", "Unsaved", () -> {
+           productController.unsavedUpdate();
         });
         Menu.addMenuOption("Ba", "Backup", () -> {
         });
