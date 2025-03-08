@@ -46,12 +46,15 @@ public class ProductModelImplement {
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery("SELECT * FROM products ORDER BY product_id");
             while (rs.next()) {
-                ProductModel product = new ProductModel(rs.getInt("product_id"), rs.getString("product_name"), rs.getDouble("product_unit_price"), rs.getInt("quantity"), rs.getDate("imported_date"));
+                ProductModel product = new ProductModel(
+                        rs.getInt("product_id"),
+                        rs.getString("product_name"),
+                        rs.getDouble("product_unit_price"),
+                        rs.getInt("quantity"),
+                        rs.getDate("imported_date")
+                );
                 productList.add(product);
             }
-            rs.close();
-            st.close();
-            conn.close();
         } catch (SQLException e) {
             System.out.println("Error SQL: " + e.getMessage());
         }
@@ -62,15 +65,14 @@ public class ProductModelImplement {
         return products;
     }
 
+    // Read product by ID from ArrayList instead of database
     public ProductModel getProductByID(int id) {
-        ProductModel product = null;
-        for (ProductModel p : products) {
-            if (p.getId() == id) {
-                product = p;
-                break;
+        for (ProductModel product : products) {
+            if (product.getId() == id) {
+                return product;
             }
         }
-        return product;
+        return null;
     }
 
     public int getNewID() {

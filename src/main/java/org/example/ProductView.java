@@ -136,4 +136,29 @@ public class ProductView {
         System.out.println(productsTable.render());
        Helper.enterInput();
     }
+
+
+    public void displayProduct(ProductModel product) {
+        Table productTable = new Table(5, BorderStyle.UNICODE_ROUND_BOX, ShownBorders.ALL);
+        CellStyle cellStyle = new CellStyle(CellStyle.HorizontalAlign.CENTER);
+
+
+        productTable.addCell(ConsoleColor.ANSI_PURPLE + " Read Product By ID " + ConsoleColor.ANSI_RESET, cellStyle, 5);
+
+        productTable.addCell(ConsoleColor.ANSI_BLUE + " ".repeat(3) + "ID" + " ".repeat(3)  + ConsoleColor.ANSI_RESET, cellStyle);
+        productTable.addCell(ConsoleColor.ANSI_BLUE+ " ".repeat(5) + "Name" + " ".repeat(5)  + ConsoleColor.ANSI_RESET, cellStyle);
+        productTable.addCell(ConsoleColor.ANSI_BLUE + " ".repeat(3) + "Unit Price" + " ".repeat(3)  + ConsoleColor.ANSI_RESET, cellStyle);
+        productTable.addCell(ConsoleColor.ANSI_BLUE + " ".repeat(3) + "Qty" + " ".repeat(3)  + ConsoleColor.ANSI_RESET, cellStyle);
+        productTable.addCell(ConsoleColor.ANSI_BLUE + " ".repeat(3) + "Import Date" + " ".repeat(3)  + ConsoleColor.ANSI_RESET, cellStyle);
+
+        // Product Data
+        productTable.addCell(String.valueOf(product.getId()), cellStyle);
+        productTable.addCell(" " .repeat(3) + product.getName()  + " ".repeat(3), cellStyle);
+        productTable.addCell(String.format("$%.2f", product.getUnitPrice()), cellStyle);
+        productTable.addCell(String.valueOf(product.getQty()), cellStyle);
+        productTable.addCell(new SimpleDateFormat("yyyy-MM-dd").format(product.getImportDate()), cellStyle);
+
+
+        System.out.println(productTable.render());
+    }
 }

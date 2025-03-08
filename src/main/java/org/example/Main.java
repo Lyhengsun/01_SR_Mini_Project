@@ -57,20 +57,15 @@ public class Main {
 
     public static void initializedMenuOption() {
         Menu.addMenuOption("W", "Write", () -> productController.writeProducts());
-        Menu.addMenuOption("R", "Read (id)", () -> {
-        });
+        Menu.addMenuOption("R", "Read (id)", () -> productController.readProductById(new Scanner(System.in)));
         Menu.addMenuOption("U", "Update", () -> productController.updateProduct());
         Menu.addMenuOption("D", "Delete", () -> {
         });
         Menu.addMenuOption("S", "Search (name)", () -> {
         });
         Menu.addMenuOption("Se", "Set rows", () -> productController.setRowsOperation());
-        Menu.addMenuOption("Sa", "Save", () -> {
-            productController.saveOperation();
-        });
-        Menu.addMenuOption("Un", "Unsaved", () -> {
-            productController.unsavedOperation();
-        });
+        Menu.addMenuOption("Sa", "Save", () -> productController.saveOperation());
+        Menu.addMenuOption("Un", "Unsaved", () -> productController.unsavedOperation());
         Menu.addMenuOption("Ba", "Backup", () -> {
         });
         Menu.addMenuOption("Re", "Restore", () -> {
