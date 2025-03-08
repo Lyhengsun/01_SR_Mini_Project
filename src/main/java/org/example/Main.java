@@ -33,8 +33,7 @@ public class Main {
     public static void initializedMenuOption() {
         Menu.addMenuOption("W", "Write", () -> {
         });
-        Menu.addMenuOption("R", "Read (id)", () -> {
-        });
+        Menu.addMenuOption("R", "Read (id)", () -> productController.readProductById(new Scanner(System.in)));
         Menu.addMenuOption("U", "Update", () -> {
         });
         Menu.addMenuOption("D", "Delete", () -> {

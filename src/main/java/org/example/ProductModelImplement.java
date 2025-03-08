@@ -7,7 +7,7 @@ import java.util.Properties;
 public class ProductModelImplement {
     private String dbName = "stock_management_db";
     private String user = "postgres";
-    private String password = "password";
+    private String password = "11112222";
     ArrayList<ProductModel> products = new ArrayList<>();
 
     public ProductModelImplement() {
@@ -59,13 +59,28 @@ public class ProductModelImplement {
         return products;
     }
 
+    //Read product by ID
     public ProductModel getProductByID(int id) {
         ProductModel product = null;
-        for(ProductModel p : products) {
-            if (p.getId() == id) {
-                product = p;
-                break;
+        String query = "SELECT * FROM products WHERE product_id = ?";
+
+        try (Connection conn = getDBConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                product = new ProductModel(
+                        rs.getInt("product_id"),
+                        rs.getString("product_name"),
+                        rs.getDouble("product_unit_price"),
+                        rs.getInt("quantity"),
+                        rs.getDate("imported_date")
+                );
             }
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
         }
         return product;
     }
