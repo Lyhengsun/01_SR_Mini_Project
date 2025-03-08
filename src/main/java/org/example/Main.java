@@ -32,6 +32,7 @@ public class Main {
 
     public static void initializedMenuOption() {
         Menu.addMenuOption("W", "Write", () -> {
+            productController.writeProducts();
         });
         Menu.addMenuOption("R", "Read (id)", () -> {
         });
@@ -44,8 +45,10 @@ public class Main {
         Menu.addMenuOption("Se", "Set rows", () -> {
         });
         Menu.addMenuOption("Sa", "Save", () -> {
+            productController.saveOperation();
         });
         Menu.addMenuOption("Un", "Unsaved", () -> {
+            productController.unsavedOperation();
         });
         Menu.addMenuOption("Ba", "Backup", () -> {
         });

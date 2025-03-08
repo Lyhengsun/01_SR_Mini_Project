@@ -25,8 +25,7 @@ public class ProductModelImplement {
             props.setProperty("ssl", "false");
 
             conn = DriverManager.getConnection(url, props);
-        }
-        catch (ClassNotFoundException | SQLException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             System.out.println("Exception: " + e.getMessage());
         }
 
@@ -34,6 +33,10 @@ public class ProductModelImplement {
             throw new NullPointerException("DB Connection is null");
 
         return conn;
+    }
+
+    public void syncData() {
+        this.products = this.getAllProductsFromDB();
     }
 
     private ArrayList<ProductModel> getAllProductsFromDB() {
@@ -61,12 +64,34 @@ public class ProductModelImplement {
 
     public ProductModel getProductByID(int id) {
         ProductModel product = null;
-        for(ProductModel p : products) {
+        for (ProductModel p : products) {
             if (p.getId() == id) {
                 product = p;
                 break;
             }
         }
         return product;
+    }
+
+    public int getNewID() {
+        return products.getLast().getId() + 1;
+    }
+
+    public boolean insertNewProductWithoutSync(ProductModel product) {
+        Connection conn = getDBConnection();
+        try {
+            String sqlInsert = "INSERT INTO products (product_name, product_unit_price, quantity)VALUES(?, ?, ?)";
+            PreparedStatement pstm = conn.prepareStatement(sqlInsert);
+            pstm.setString(1, product.getName());
+            pstm.setDouble(2, product.getUnitPrice());
+            pstm.setInt(3, product.getQty());
+            int stResult = pstm.executeUpdate();
+            conn.close();
+            pstm.close();
+            return stResult > 0;
+        } catch (SQLException e) {
+            System.out.println("SQL Error : " + e.getMessage());
+        }
+        return false;
     }
 }

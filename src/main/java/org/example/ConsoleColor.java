@@ -18,6 +18,4 @@ public class ConsoleColor {
     public static void choiceMessage(String msg) {
         System.out.println(ANSI_YELLOW + msg + ANSI_RESET);
     }
-
-//    public static
 }
