@@ -23,7 +23,7 @@ public class ProductController {
         while (true) {
 
             while (true) {
-                System.out.print("Please Enter ID to Delete the record: ");
+                System.out.print(ConsoleColor.ANSI_YELLOW + "Please Enter ID to Delete the record: " +ConsoleColor.ANSI_RESET);
 
                 if (scan.hasNextInt()) {
                     productID = scan.nextInt();
@@ -34,10 +34,10 @@ public class ProductController {
                         if (product != null) {
                             break;
                         } else {
-                            System.out.println("Product not found. Please enter a valid Product ID.");
+                            System.out.println(ConsoleColor.ANSI_YELLOW+ "Product not found. Please enter a valid Product ID." +ConsoleColor.ANSI_RESET);
                         }
                     } else {
-                        System.out.println("Product ID cannot be 0 or negative. Please enter a valid number.");
+                        System.out.println(ConsoleColor.ANSI_YELLOW+ "Product ID cannot be 0 or negative. Please enter a valid number." +ConsoleColor.ANSI_RESET);
                     }
                 } else {
                     System.out.println("Invalid input. Please enter a valid number for Product ID.");
@@ -51,13 +51,13 @@ public class ProductController {
             if (confirmation.equalsIgnoreCase("y") || confirmation.equalsIgnoreCase("yes")) {
                 boolean isDeleted = pmi.deleteProduct(productID);
                 if (isDeleted) {
-                    System.out.println("Deleted successfully.");
+                    System.out.println(ConsoleColor.ANSI_GREEN+ "Deleted successfully." + ConsoleColor.ANSI_RESET);
                     System.out.println("Press Enter to continue...");
                     scan.nextLine();
                     scan.nextLine();
                     break;
                 } else {
-                    System.out.println("Error: Unable to delete product.");
+                    System.out.println(ConsoleColor.ANSI_RED + "Error: Unable to delete product." + ConsoleColor.ANSI_RESET);
                 }
             } else {
                 System.out.println("Deletion canceled.");
