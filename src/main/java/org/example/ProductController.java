@@ -7,6 +7,8 @@ public class ProductController {
     private final ProductView pv;
     private final ProductModelImplement pmi;
     private ArrayList<ProductModel> unsavedWrite = new ArrayList<>();
+    private int rows = 3;
+    private int startCount = 0;
 
     ProductController(ProductView pv, ProductModelImplement pmi) {
         this.pv = pv;
@@ -14,7 +16,29 @@ public class ProductController {
     }
 
     public void printPaginationView() {
-        System.out.println(pv.getProductPage(pmi.getAllProducts()));
+        System.out.println(pv.getProductPage(pmi.getAllProducts(), this.startCount, this.rows));
+    }
+
+    public void setStartCount(int startCount) {
+        this.startCount = startCount;
+    }
+
+    public void incrementPage() {
+        this.startCount = Math.min(this.startCount + this.rows, ((this.getTotalPage()-1) * this.rows));
+    }
+    public void decrementPage() {
+        this.startCount = Math.max(this.startCount - this.rows, 0);
+    }
+    public int getTotalPage(){
+        ArrayList<ProductModel> products = pmi.getAllProducts();
+        return ((products.size() / this.rows) + (products.size() % this.rows == 0 ? 0 : 1));
+    }
+    public void setPageByPageNumber(int pageNumber) {
+        if (pageNumber <= getTotalPage() && pageNumber > 0)
+            this.startCount = (pageNumber -1) * this.rows;
+    }
+    public void setRows(int rows) {
+        this.rows = rows;
     }
 
     public void writeProducts() {
@@ -32,14 +56,30 @@ public class ProductController {
         this.pv.input("Press Enter to continue...");
     }
 
+    public void setRowsOperation() {
+        while (true){
+            int rowsSizeInput = Integer.parseInt(pv.inputLoopWithRegexValidation("Enter a rows size", "^[0-9]+$", "Invalid Input. Rows size need to be an integer and bigger than 0"));
+            if (rowsSizeInput > 0) {
+                this.setRows(rowsSizeInput);
+                break;
+            }
+            System.out.println("Invalid Input. Rows size need to be an integer and bigger than 0\n");
+        }
+    }
+
     public void saveOperation() {
         while (true) {
-            System.out.println("'si' to save insert and 'su' to save update and 'b' to go back to the menu");
+            System.out.println("'si' to save writes and 'su' to save update and 'b' to go back to the menu");
             String unsavedInput = pv.input("Enter your input :").toLowerCase();
 
             boolean exit = false;
             switch (unsavedInput) {
                 case "si" -> {
+                    if (unsavedWrite.isEmpty()) {
+                        System.out.println("There are no unsaved writes to save");
+                        exit = true;
+                        break;
+                    }
                     System.out.println(pv.productsView(unsavedWrite));
                     boolean confirmInsert = pv.inputYesNoLoopValidation(ConsoleColor.ANSI_YELLOW + "Are you sure to save this insert? (input y for yes and n for no) : " + ConsoleColor.ANSI_RESET);
 
@@ -55,16 +95,15 @@ public class ProductController {
                     } else {
                         System.out.println(ConsoleColor.ANSI_RED + "Save Write Cancelled" + ConsoleColor.ANSI_RESET);
                     }
-                    pv.input("Press Enter to go back to menu...");
                     exit = true;
                 }
                 case "su" -> {
                     System.out.println();
-                    pv.input("Press Enter to go back to menu...");
                     exit = true;
                 }
             }
             if (unsavedInput.equals("b") || exit) {
+                pv.input("Press Enter to go back to menu...");
                 System.out.println();
                 break;
             }
@@ -75,11 +114,16 @@ public class ProductController {
     public void unsavedOperation() {
         while (true) {
             System.out.println("'ui' for unsaved insert and 'uu' for unsaved update and 'b' to go back to the menu");
-            String unsavedInput = pv.input("Enter your input :").toLowerCase();
+            String unsavedInput = pv.input("Enter your input").toLowerCase();
 
             boolean exit = false;
             switch (unsavedInput) {
                 case "ui" -> {
+                    if (unsavedWrite.isEmpty()) {
+                        System.out.println("There are no unsaved writes to display");
+                        exit = true;
+                        break;
+                    }
                     System.out.println(pv.productsView(unsavedWrite));
                     pv.input("Press Enter to go back to menu...");
                     exit = true;

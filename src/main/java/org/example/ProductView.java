@@ -6,14 +6,13 @@ import org.nocrala.tools.texttablefmt.ShownBorders;
 import org.nocrala.tools.texttablefmt.Table;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Pattern;
+import java.util.stream.IntStream;
 
 public class ProductView {
-    public  <T extends Collection<ProductModel>> String getProductPage(T products) {
+    public String getProductPage(ArrayList<ProductModel> products, int startCount, int rows) {
+        int endCount = Math.min(startCount + rows, products.size());
         Table productTable = new Table(5, BorderStyle.UNICODE_ROUND_BOX, ShownBorders.ALL);
         CellStyle cellStyle = new CellStyle(CellStyle.HorizontalAlign.CENTER);
         productTable.addCell(" ".repeat(3) + "ID" + " ".repeat(3), cellStyle);
@@ -22,14 +21,17 @@ public class ProductView {
         productTable.addCell(" ".repeat(3) + "Qty" + " ".repeat(3), cellStyle);
         productTable.addCell(" ".repeat(3) + "Import Date" + " ".repeat(3), cellStyle);
 
-        for (ProductModel product : products) {
+        List<ProductModel> shownProducts = IntStream.range(startCount, endCount).mapToObj(products::get).toList();
+        for (ProductModel product : shownProducts) {
             productTable.addCell(String.valueOf(product.getId()), cellStyle);
             productTable.addCell(" ".repeat(3) + product.getName() + " ".repeat(3), cellStyle);
             productTable.addCell(String.format("%.2f", product.getUnitPrice()), cellStyle);
             productTable.addCell(String.valueOf(product.getQty()), cellStyle);
             productTable.addCell(new SimpleDateFormat("yyyy-MM-dd").format(product.getImportDate()), cellStyle);
         }
-        productTable.addCell("Page 1", cellStyle, 2);
+        productTable.addCell("Page " +
+                ((endCount / rows)  + (endCount % rows == 0 ? 0 : 1)) + "/" +
+                ((products.size() / rows) + (products.size() % rows == 0 ? 0 : 1)), cellStyle, 2);
         productTable.addCell("Total Records : " + products.size(), cellStyle, 3);
         return productTable.render();
     }
@@ -42,7 +44,7 @@ public class ProductView {
 
     public String inputLoopWithRegexValidation(String question, String regex, String failedMessage) {
         while (true) {
-            String inputString = input(question);
+            String inputString = input(question).trim();
             if (Pattern.matches(regex, inputString)) {
                 return inputString;
             }
@@ -66,7 +68,7 @@ public class ProductView {
 
     public ProductModel writeProductView(int newId) {
         System.out.println("ID: " + newId);
-        String productNameInput = inputLoopWithRegexValidation("Input Product Name", "^[a-zA-Z\\s]+$", "Invalid Format for name. Please try again");
+        String productNameInput = inputLoopWithRegexValidation("Input Product Name", "^[a-zA-Z0-9\\s]+$", "Invalid Format for name. Please try again");
         double productPriceInput = Double.parseDouble(inputLoopWithRegexValidation("Enter price", "^[0-9.]+$", "Invalid Format for price. Please try again."));
         int productQtyInput = Integer.parseInt(inputLoopWithRegexValidation("Enter quantity", "^[0-9]{1,8}$", "Invalid Format for quantity and quantity can't be more than 8 digits. Please try again"));
 
