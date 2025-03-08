@@ -8,6 +8,7 @@ import org.nocrala.tools.texttablefmt.Table;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class ProductView {
     public String getProductPage(ArrayList<ProductModel> products) {
@@ -35,4 +36,18 @@ public class ProductView {
         System.out.print(question + " :");
         return sc.nextLine();
     }
+
+    public String inputLoopWithRegexValidation(String question, String regex, String failedMessage) {
+        while (true) {
+            String inputString = input(question);
+            if (Pattern.matches(regex, inputString)) {
+                return inputString;
+            }
+            System.out.println(failedMessage + "\n");
+        }
+    }
+
+//    public ProductModel writeProductView() {
+//
+//    }
 }
