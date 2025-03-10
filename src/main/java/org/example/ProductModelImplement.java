@@ -61,7 +61,7 @@ public class ProductModelImplement {
         return products;
     }
 
-    // Read product by ID from ArrayList instead of database
+    // Read product by ID from ArrayList
     public ProductModel getProductByID(int id) {
         for (ProductModel product : products) {
             if (product.getId() == id) {
