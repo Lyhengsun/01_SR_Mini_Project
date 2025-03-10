@@ -37,7 +37,7 @@ public class Main {
                     case "l" -> productController.setPageByPageNumber(totalPage);
                     case "g" -> {
                         while (true) {
-                            int pageNumInput = Integer.parseInt(pv.inputLoopWithRegexValidation(ConsoleColor.ANSI_YELLOW + "Enter page number (1-" + totalPage + "): " + ConsoleColor.ANSI_RESET, "^[0-9+$", "Invalid Input. Please enter a valid page number"));
+                            int pageNumInput = Integer.parseInt(pv.inputLoopWithRegexValidation(ConsoleColor.ANSI_YELLOW + "Enter page number (1-" + totalPage + "): " + ConsoleColor.ANSI_RESET, "^[0-9]+$", "Invalid Input. Please enter a valid page number"));
                             if (pageNumInput > 0 && pageNumInput <= totalPage) {
                                 productController.setPageByPageNumber(pageNumInput);
                                 break;
